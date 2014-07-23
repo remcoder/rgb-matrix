@@ -1,0 +1,11 @@
+- get it to compile & run with Xcode and get the debugger to work
+- split the code into separate files:
+	- tests + main
+	- protocol lib
+	- mocks
+	such that the protocol lib can be used separately
+- create classes for the reader and writer?
+- tests should check byte length of generated commands
+- use a real unittest lib
+- find an elegant way to define opcodes
+- test reader and writer separately?

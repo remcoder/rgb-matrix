@@ -1,0 +1,41 @@
+commands
+--------
+
+these commands are optimized for size and based on a 8x8 rgb matrix
+	- a nice option would be to base the actual sizes of the commands at runtim
+	based on the size of the matrix and possible the color options too.
+	This would yield an optimal protocol that is flexible for many displays.
+
+pxl:	| x , y | = 1 byte
+	- draw pixel 
+	
+vli	 | x , length | = 1 byte
+	- draw vertical line 
+
+hli	 | y , length | = 1 byte
+	- draw horizontal line 
+
+lin  | x1,y2 | x2,y2 | = 2 bytes
+	- draw a line 
+
+rct  | x1,y2 | x2,y2 | = 2 bytes
+	- draw a rectangle 
+
+rcb  | x1,y2 | x2,y2 | = 2 bytes
+	- draw a rectangle border
+
+col  | r | g | b | = 3 bytes
+	- set color
+
+clr 
+	- clear 
+
+cir
+	- draw a circle
+
+bmp	64 x | r | g | b | = 192 bytes
+	- draw a full color bitmap
+	- (may a variant that takes less bytes would be nice)
+
+bin	8 x | row | = 8 bytess
+	- draw a single color bitmap using current color. zeros are skipped

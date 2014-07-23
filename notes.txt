@@ -1,0 +1,30 @@
+ColorDuino musings
+==================
+
+- direct connect only to Uno (5v, 500mA/channel, requires a lot of pins)
+- Uno will still have I2C pins and/or serial-over-usb available
+- use EEPROM to store current state
+	- 1024 kB: either
+		- animation of 5 frames + 64 bytes of control data (1 frame = 8*8*3 bytes using 8-bit pwm per color)
+		- ..
+		
+- font glyphs part of program (PROGMEM data written in flash)
+- keep RAM free for running the program
+- whitebalancing using special registers. how?
+
+- character mode
+	- display 1 character at the time:
+		char+r+g+b = 4bytes
+	- global settings
+		- speed
+		- ..
+
+- direct control via I2C
+	- max 400000kHz (bits)
+	- a single frame = 8*8*3 = 192bytes
+	- 1000ms * (192*8 bits) / 400000bps = 3.84 ms per frame (considerably less then the 16.67 max for 60fps )
+
+libraries
+https://github.com/lincomatic/Colorduino
+https://github.com/DinoTools/Colorduino_GFX (uses Adafruit GFX)
+https://github.com/Electromondo-Coding/ColorduinoScrollerLibrary (uses Colorduino_GFX)

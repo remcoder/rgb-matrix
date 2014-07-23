@@ -1,0 +1,16 @@
+body {
+	text-align : center;
+}
+
+pixelSize = 32px
+
+.pixel {
+	display: inline-block;	
+	width: pixelSize;
+	height: pixelSize;
+	background-color: #eee;
+	border-radius: (pixelSize / 2);
+	&.on {
+		background-color: red;
+	}
+}

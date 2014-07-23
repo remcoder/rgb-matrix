@@ -1,0 +1,35 @@
+<head>
+  <title>webcontrol</title>
+</head>
+
+<body>
+  {{> main}}
+</body>
+
+<template name="main">
+  <h1>ColorDuino</h1>
+  
+  {{#with matrix}}
+  	<div>
+	  	<!-- status: {{ status }} -->
+	  	{{#unless connected}}
+			<button data-action="connect">connect</button>
+		{{/unless}}
+	</div>
+	<div>
+	{{#if connected}}
+		{{#each rows}}
+			<div>
+				{{#each columns}}
+					<div class="pixel {{#if pixel}}on{{/if}}" data-row="{{../index}}" data-column="{{index}}">&nbsp;</div>
+				{{/each}}
+			</div>
+		{{/each}}
+		<div>
+			<button data-action="clear">clear</button>
+		</div>
+	{{/if}}	
+	</div>
+
+  {{/with}}
+</template>
