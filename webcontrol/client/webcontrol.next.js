@@ -2,8 +2,8 @@ Template.main.matrix = function() {
 	return Matrix.findOne('42');
 }
 
-Template.main.connected = function() {
-	return this.status == 'connected';
+Template.main.arduino = function() {
+	return Arduinos.findOne();
 }
 
 Template.main.rows = function() {
@@ -33,14 +33,14 @@ Template.main.events = {
 		bitmap[row][column] = +!pixel;
 		bitmap = bitmap.map(function(line) { return line.join(''); } );		
 		Matrix.update('42', { $set: 
-  			{ bitmap: bitmap } 
-  		});
-  		console.log('bitmap', bitmap);
+			{ bitmap: bitmap } 
+		});
+		console.log('bitmap', bitmap);
 	},
 
 	'click [data-action=clear]' : function() {
 		Matrix.update('42', { $set: 
-  			{ bitmap: _.range(8).map( el => '00000000' ) } 
-  		});
+			{ bitmap: _.range(8).map( el => '00000000' ) } 
+		});	
 	}
 }
