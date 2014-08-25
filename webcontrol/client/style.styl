@@ -1,5 +1,9 @@
 body {
+  margin:0;
+  padding:0;
 	text-align : center;
+  background-color: #222;
+  color: #ddd;
 }
 
 pixelSize = 32px
@@ -8,9 +12,10 @@ pixelSize = 32px
 	display: inline-block;	
 	width: pixelSize;
 	height: pixelSize;
-	background-color: #eee;
+	background-color: #444;
 	border-radius: (pixelSize / 2);
 	&.on {
 		background-color: red;
+    box-shadow: 0px 0px 90px rgba(255,0,0,0.5);
 	}
 }
