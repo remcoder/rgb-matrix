@@ -10,28 +10,28 @@
   <h1>ColorDuino</h1>
   
   {{#with matrix}}
-    	{{#if arduino}}
-        
-        <div>
-      		{{#each rows}}
-      			<div>
-      				{{#each columns}}
-      					<div class="pixel {{#if pixel}}on{{/if}}" data-row="{{../index}}" data-column="{{index}}">&nbsp;</div>
-      				{{/each}}
-      			</div>
-      		{{/each}}
-        </div>
-    		<div>
-    			<button data-action="clear">clear</button>
-    		</div>
-        <pre>port: {{arduino.port.comName}}
-        </pre>
-      {{else}}
+    {{#if arduino}}
+      
+      <div>
+        {{#each rows}}
+          <div>
+            {{#each columns}}
+              <div class="pixel {{#if pixel}}on{{/if}}" data-row="{{../index}}" data-column="{{index}}">&nbsp;</div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+      <div>
+        <button data-action="clear">clear</button>
+      </div>
+      <pre>port: {{arduino.port.comName}}
+      </pre>
+    {{else}}
       <div>
         please connect your Colorduino
       </div>
-    	{{/if}}	
-  	
+    {{/if}} 
+    
 
   {{/with}}
 </template>

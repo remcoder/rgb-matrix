@@ -15,13 +15,6 @@ Template.main.columns = function() {
 }
 
 Template.main.events = {
-	'click [data-action=connect]' : function(evt) {
-		console.log('click button');
-		Meteor.call('connect', function(err, res) {
-			console.log(err, res);
-		});
-	},
-
 	'click .pixel' : function(evt) {
 
 		var el = evt.currentTarget;
@@ -35,7 +28,7 @@ Template.main.events = {
 		Matrix.update('42', { $set: 
 			{ bitmap: bitmap } 
 		});
-		console.log('bitmap', bitmap);
+		// console.log('bitmap', bitmap);
 	},
 
 	'click [data-action=clear]' : function() {

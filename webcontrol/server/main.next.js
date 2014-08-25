@@ -18,8 +18,8 @@ Meteor.startup(function () {
 	Matrix.find('42').observe({
 
 		changed: function(newDoc) {
-			console.log('observe');
-			send(newDoc.bitmap);
+			// console.log('observe', newDoc);
+		  send(newDoc.bitmap);
 		}
 	})
 
