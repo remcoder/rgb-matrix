@@ -1,30 +1,33 @@
 var serialPort = Meteor.require('serialport'),
   serial = null;
 
-this.send = function (bitmap) {
+this.send = function (bitmask) {
   if (!serial) return;
-  // console.log('sending', bitmap) 
-  var bytes = bitmap.map(function(binaryString) {
+  // console.log('sending', bitmask) 
+  
+  
+  var bytes = bitmask.map(function(binaryString) {
     return parseInt(binaryString,2);
   });
-  bytes.push(0x0a);
+  bytes.unshift(Opcodes['msk']);
+
   return serial.write(new Buffer(bytes));
 };
 
 var onReady = Meteor.bindEnvironment(function() {
-      console.log('init matrix')
-      Matrix.update('42', { $set: 
-        { status: 'connected',
-          bitmap : [ '00011000',
-                     '00111100',
-                     '01111110',
-                     '11011011',
-                     '11111111',
-                     '00100100',
-                     '01011010',
-                     '00100100'] } 
-      });
+  console.log('init matrix')
+  Matrix.update('42', { $set: 
+    { status: 'connected',
+      bitmap : [ '00011000',
+                 '00111100',
+                 '01111110',
+                 '11011011',
+                 '11111111',
+                 '00100100',
+                 '01011010',
+                 '00100100'] } 
   });
+});
 
 function onOpen () {
   var input = "";

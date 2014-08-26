@@ -37,5 +37,5 @@ bmp	64 x | r | g | b | = 192 bytes
 	- draw a full color bitmap
 	- (may a variant that takes less bytes would be nice)
 
-bin	8 x | row | = 8 bytess
+msk	8 x | row | = 8 bytes
 	- draw a single color bitmap using current color. zeros are skipped
