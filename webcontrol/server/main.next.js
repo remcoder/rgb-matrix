@@ -5,6 +5,7 @@ Meteor.startup(function () {
 	Matrix.insert({
 		_id : '42',
 		status : 'disconnected',
+    color  : [0,255,0],
 		bitmap : [ '00000000',
                '00000000',
                '00000000',
@@ -19,7 +20,7 @@ Meteor.startup(function () {
 
 		changed: function(newDoc) {
 			// console.log('observe', newDoc);
-		  send(newDoc.bitmap);
+		  send(newDoc);
 		}
 	})
 

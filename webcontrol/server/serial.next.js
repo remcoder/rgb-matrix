@@ -1,17 +1,19 @@
 var serialPort = Meteor.require('serialport'),
   serial = null;
 
-this.send = function (bitmask) {
-  if (!serial) return;
-  // console.log('sending', bitmask) 
-  
-  
-  var bytes = bitmask.map(function(binaryString) {
+this.send = function (doc) {
+  // send bitmask
+  var bytes = doc.bitmap.map(function(binaryString) {
     return parseInt(binaryString,2);
   });
   bytes.unshift(Opcodes['msk']);
 
-  return serial.write(new Buffer(bytes));
+  serial.write(new Buffer(bytes));
+
+  // send color
+  bytes = doc.color;
+  bytes.unshift(Opcodes['col']);
+  serial.write(new Buffer(bytes));
 };
 
 var onReady = Meteor.bindEnvironment(function() {
