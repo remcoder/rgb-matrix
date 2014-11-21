@@ -3,18 +3,33 @@
 #include <Adafruit_GFX.h>
 #include <Colorduino_GFX.h>
 
+// OPCODES
+const uint8_t MSK = 0x00;
+const uint8_t COL = 0x01;
+const uint8_t PXL = 0x02;
+const uint8_t VLI = 0x03;
+const uint8_t HLI = 0x04;
+const uint8_t LIN = 0x05;
+const uint8_t RCT = 0x06;
+const uint8_t RCB = 0x07;
+const uint8_t CLR = 0x08;
+const uint8_t CIR = 0x09;
+const uint8_t BMP = 0x10;
+
+uint8_t bufferSize[] = {8,3,1,1,1,2,2,2,0,0,192};
+
 // Create new Colorduino instance
 ColorduinoPanel Colorduino;
+
 
 // some vars required for timing
 long previousMillis = 0;
 long interval = 250;
 
-unsigned char bitmap[9];
-unsigned char serialBuffer[256];  
+uint8_t buffer[256];
 
-boolean hasMessage = false;
-long bufferIndex = 0; 
+long bufferIndex = 0;
+GFX_Color_t currentColor = Colorduino.color(255, 0, 0);
 
 void drawBitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t w, int16_t h, uint16_t color) {
 
@@ -23,70 +38,82 @@ void drawBitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t w, int16_t h, uin
   for(j=0; j<h; j++) {
     for(i=0; i<w; i++ ) {
       if(((bitmap[j * byteWidth + i / 8])) & (128 >> (i & 7))) {
-	Colorduino.drawPixel(x+i, y+j, color);
+    Colorduino.drawPixel(x+i, y+j, color);
       }
     }
   }
 }
 
-void draw() {
+// COMMANDS
+void drawMask() {
   // clear the back-buffer
   GFX_Color_t background = Colorduino.color(0, 0, 0);
   Colorduino.fillColor(background);
-  
-  // create new color
-  GFX_Color_t color = Colorduino.color(255, 0, 0);
-  
+
   // draw on the back-buffer
   //Colorduino.drawLine(random(7), random(7), random(7), random(7), color);
   //Colorduino.drawTriangle(0,0, 7,0 , 7,7, color);
-  drawBitmap(0,0, bitmap, 8,8, color),
-    
+  drawBitmap(0,0, buffer, 8,8, currentColor);
+
   // swap the buffers, but don't copy the new front-buffer to the new back-buffer
   Colorduino.swapBuffers(false);
 }
 
-void setup() {  
+void setColor() {
+  currentColor = Colorduino.color(buffer[0], buffer[1], buffer[2]);
+}
+
+void doCommand(uint8_t opcode) {
+  switch(opcode) {
+    case MSK:
+      drawMask();
+      break;
+    case COL:
+      setColor();
+      break;
+  }
+}
+
+void setup() {
   Serial.begin(19200);
   Serial.println("*** ColorDuino ***");
   Serial.println("starting...");
 
-  
   // Set port mode, load data structures and start the timer
   Colorduino.init();
   // Set white balance
   Colorduino.setWhiteBalance(36, 63, 63);
-  
+
   Serial.println("ready.");
 }
 
 void loop() {
-
-  if (hasMessage) {  
-    draw();
-    hasMessage = false;
-  }
 }
 
-unsigned char opcode = 0;
+uint8_t opcode = 255;
+
 void serialEvent() {
   while (Serial.available()) {
 
-    unsigned char incomingByte = (char)Serial.read(); 
+    uint8_t incomingByte = (uint8_t)Serial.read();
 
-    if (bufferIndex == 0) {
+    if (opcode == 255) {
       opcode = incomingByte;
-      bufferIndex++;
+      continue;
     }
-    else if (bufferIndex == 8) {
-      bitmap[bufferIndex-1] = incomingByte;
-      hasMessage = true;      
+
+    buffer[bufferIndex] = incomingByte;
+    bufferIndex++;
+    if (bufferIndex == bufferSize[opcode]) {
+      doCommand(opcode);
+
+      opcode = 255;
       bufferIndex = 0;
-    }
-    else {
-      bitmap[bufferIndex-1] = incomingByte;
-      bufferIndex++;
     }
   }
 }
+
+
+
+
 

@@ -18,7 +18,7 @@ this.send = function (doc) {
 
 var onReady = Meteor.bindEnvironment(function() {
   console.log('init matrix')
-  Matrix.update('42', { $set: 
+  Matrix.update('42', { $set:
     { status: 'connected',
       bitmap : [ '00011000',
                  '00111100',
@@ -27,7 +27,7 @@ var onReady = Meteor.bindEnvironment(function() {
                  '11111111',
                  '00100100',
                  '01011010',
-                 '00100100'] } 
+                 '00100100'] }
   });
 });
 
@@ -55,13 +55,13 @@ function onListDevices (err, ports) {
 
   // console.log(ports);
   var arduinoPort = ports.filter(p => p.manufacturer.indexOf('Arduino') > -1)[0];
-  
+
   if (arduinoPort) {
     var arduino = Arduinos.findOne(arduinoPort.comName);
-    
+
     if (!arduino) {
       console.log('Arduino detected on port: ', arduinoPort.comName);
-      Arduinos.insert({ 
+      Arduinos.insert({
         _id : arduinoPort.comName,
         port: arduinoPort
       });

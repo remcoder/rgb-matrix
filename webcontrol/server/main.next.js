@@ -5,7 +5,7 @@ Meteor.startup(function () {
 	Matrix.insert({
 		_id : '42',
 		status : 'disconnected',
-    color  : [0,255,0],
+        color  : [0,255,0],
 		bitmap : [ '00000000',
                '00000000',
                '00000000',
@@ -26,7 +26,7 @@ Meteor.startup(function () {
 
   Arduinos.remove({});
   self.serialPort = Meteor.require('serialport');
-  Meteor.setInterval(detectArduino, 1000);  
-});	
+  Meteor.setInterval(detectArduino, 1000);
+});
 
 
