@@ -6,9 +6,10 @@
 standard-app-packages
 autopublish
 insecure
-fast-render
 stylus
-npm
 underscore
-harmony
-zones
+meteorhacks:npm
+
+npm-container
+mquandalle:harmony
+

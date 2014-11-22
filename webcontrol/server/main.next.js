@@ -25,7 +25,6 @@ Meteor.startup(function () {
 	})
 
   Arduinos.remove({});
-  self.serialPort = Meteor.require('serialport');
   Meteor.setInterval(detectArduino, 1000);
 });
 

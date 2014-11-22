@@ -1,4 +1,4 @@
-var serialPort = Meteor.require('serialport'),
+var serialPort = Meteor.npmRequire('serialport'),
   serial = null;
 
 this.send = function (doc) {
