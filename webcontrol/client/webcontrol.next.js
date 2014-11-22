@@ -13,7 +13,7 @@ Template.main.arduino = function() {
 Template.main.pixels = function() {
 	var pixels = [];
 
-	this.bitmap.forEach(function(r, i) {
+	this.bitmask.forEach(function(r, i) {
 		r.split('').forEach(function(val, j) {
 			pixels.push({
 				row: i,
@@ -28,7 +28,7 @@ Template.main.pixels = function() {
 }
 
 Template.main.columns = function() {
-	return this.row.split('').map(function(val, i){ return { pixel: !!+val, index: i }; });	
+	return this.row.split('').map(function(val, i){ return { pixel: !!+val, index: i }; });
 }
 
 Template.main.events = {
@@ -37,28 +37,28 @@ Template.main.events = {
 		var el = evt.currentTarget;
 		var row = el.getAttribute('data-row');
 		var column = el.getAttribute('data-column');
-		var bitmap = Matrix.findOne('42').bitmap.map(function(line) { return line.split(''); } );
-		var pixel = !!+bitmap[row][column];
+		var bitmask = Matrix.findOne('42').bitmask.map(function(line) { return line.split(''); } );
+		var pixel = !!+bitmask[row][column];
 		// console.log('click pixel', row, column, pixel);
-		bitmap[row][column] = +!pixel;
-		bitmap = bitmap.map(function(line) { return line.join(''); } );		
-		Matrix.update('42', { $set: 
-			{ bitmap: bitmap } 
+		bitmask[row][column] = +!pixel;
+		bitmask = bitmask.map(function(line) { return line.join(''); } );
+		Matrix.update('42', { $set:
+			{ bitmask: bitmask }
 		});
-		// console.log('bitmap', bitmap);
+		// console.log('bitmask', bitmask);
 	},
-	
+
 	'change input[type=color]' : _.throttle(function(evt) {
-		// console.log(evt.currentTarget.value);	
-		Matrix.update('42', { $set: 
-			{ color: hex2rgb(evt.currentTarget.value) } 
-		});	
+		// console.log(evt.currentTarget.value);
+		Matrix.update('42', { $set:
+			{ color: hex2rgb(evt.currentTarget.value) }
+		});
 	},50),
 
 	'click [data-action=clear]' : function() {
-		Matrix.update('42', { $set: 
-			{ bitmap: _.range(8).map( el => '00000000' ) } 
-		});	
+		Matrix.update('42', { $set:
+			{ bitmask: _.range(8).map( el => '00000000' ) }
+		});
 	}
 }
 
