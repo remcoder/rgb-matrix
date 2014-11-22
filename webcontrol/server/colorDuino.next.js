@@ -2,7 +2,7 @@ var serialPort = Meteor.npmRequire('serialport'),
   serial = null,
   _baudrate = 9600,
   onConnect = null,
-  status = 'unitialized';
+  status = 'unintialized';
 
 var onReady = Meteor.bindEnvironment(function() {
   console.log('init matrix')
