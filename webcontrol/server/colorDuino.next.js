@@ -75,8 +75,7 @@ function connect(port) {
   });
 }
 
-function start(opts) {
-  opts = opts || {};
+function start(opts={}) {
   status = 'scanning for devices'
   if (opts.baudrate)
     _baudrate = opts.baudrate;

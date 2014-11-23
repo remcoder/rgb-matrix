@@ -21,7 +21,7 @@ Meteor.startup(function () {
     changed: function(newDoc, oldDoc) {
       // console.log('observe', newDoc);
       if (newDoc.color != oldDoc.color)
-        colorDuino.setColor(newDoc.color[0], newDoc.color[1], newDoc.color[2]); // TODO: ES6 splat
+        colorDuino.setColor(...newDoc.color);
 
       if (!_.isEqual(newDoc, oldDoc))
         colorDuino.bitmask(newDoc.bitmask);
@@ -33,7 +33,7 @@ Meteor.startup(function () {
     onConnect : function() {
       var m = Matrix.findOne('42');
       // console.log(m);
-      colorDuino.setColor(m.color[0], m.color[1], m.color[2]); // TODO: ES6 splat
+      colorDuino.setColor(...m.color);
       colorDuino.bitmask(m.bitmask);
     }
   });
