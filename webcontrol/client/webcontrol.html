@@ -7,35 +7,42 @@
 </body>
 
 <template name="main">
-  <h1>ColorDuino</h1>
-  
+  <h1>ColorDuino commands</h1>
+
   {{#with matrix}}
     {{#if arduino}}
-      
-      <div class="matrix">
-        {{#each pixels}}
-          <div class="pixel"
-            style="-webkit-transform: translate3d({{x}}px,{{y}}px,0);
-              {{#if pixel}}
-                background-color: rgb({{../color}});
-                box-shadow: 0px 0px 90px rgba({{../color}},0.5);
-              {{/if}}"
-            data-row="{{row}}"
-            data-column="{{column}}">&nbsp;</div>
-        {{/each}}
-      </div>
-      <div>
-        <input name="color" type=color value="{{hexColor color}}"/>
-        <button data-action="clear">clear</button>
-      </div>
-      <pre>port: {{arduino.port.comName}}
+      <pre>Colorduino connected on port: {{arduino.port.comName}}
       </pre>
+      {{> bitmask }}
+      {{> setColor }}
     {{else}}
       <div>
-        please connect your Colorduino
+      please connect your Colorduino
       </div>
-    {{/if}} 
-    
-
+    {{/if}}
   {{/with}}
+</template>
+
+<template name="bitmask">
+  <h2>Bitmask</h2>
+    <div class="matrix">
+    {{#each pixels}}
+      <div class="pixel"
+      style="-webkit-transform: translate3d({{x}}px,{{y}}px,0);
+        {{#if pixel}}
+        background-color: rgb({{../color}});
+        box-shadow: 0px 0px 90px rgba({{../color}},0.5);
+        {{/if}}"
+      data-row="{{row}}"
+      data-column="{{column}}">&nbsp;</div>
+    {{/each}}
+    </div>
+</template>
+
+<template name="setColor">
+  <h2>SetColor</h2>
+  <div>
+    <input name="color" type=color value="{{hexColor color}}"/>
+    <button data-action="clear">clear</button>
+  </div>
 </template>
