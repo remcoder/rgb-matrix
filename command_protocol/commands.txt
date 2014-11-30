@@ -7,19 +7,19 @@ these commands are optimized for size and based on a 8x8 rgb matrix
 	This would yield an optimal protocol that is flexible for many displays.
 
 pxl:	| x , y | = 1 byte
-	- draw pixel 
-	
-vli	 | x , length | = 1 byte
-	- draw vertical line 
+	- draw pixel
 
-hli	 | y , length | = 1 byte
-	- draw horizontal line 
+vli	 | column , start, length | = 3 bytes (could be 2)
+	- draw vertical line
+
+hli	 | row , start, length | = 3 bytes (could be 2)
+	- draw horizontal line
 
 lin  | x1,y2 | x2,y2 | = 2 bytes
-	- draw a line 
+	- draw a line
 
 rct  | x1,y2 | x2,y2 | = 2 bytes
-	- draw a rectangle 
+	- draw a rectangle
 
 rcb  | x1,y2 | x2,y2 | = 2 bytes
 	- draw a rectangle border
@@ -27,8 +27,8 @@ rcb  | x1,y2 | x2,y2 | = 2 bytes
 col  | r | g | b | = 3 bytes
 	- set color
 
-clr 
-	- clear 
+clr
+	- clear
 
 cir
 	- draw a circle

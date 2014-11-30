@@ -1,3 +1,9 @@
+/*
+
+IMPORTANT: use with Arduino IDE 1.5.5!
+  1.5.6 - 1.5.8 don't work currently
+
+*/
 
 // Include required libraries
 #include <Adafruit_GFX.h>
@@ -14,9 +20,12 @@ const uint8_t RCT = 0x06;
 const uint8_t RCB = 0x07;
 const uint8_t CLR = 0x08;
 const uint8_t CIR = 0x09;
-const uint8_t BMP = 0x10;
+const uint8_t BMP = 0x0a;
+const uint8_t TST = 0xfe; // special test mode. goes through all commands in a loop
+const uint8_t NO_CMD = 0xff;
 
-uint8_t bufferSize[] = {8,3,1,1,1,2,2,2,0,0,192};
+
+uint8_t bufferSize[] = {8,3,1,3,3,2,2,2,0,0,192};
 
 // Create new Colorduino instance
 ColorduinoPanel Colorduino;
@@ -36,15 +45,16 @@ void drawBitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t w, int16_t h, uin
   int16_t i, j, byteWidth = (w + 7) / 8;
 
   for(j=0; j<h; j++) {
-    for(i=0; i<w; i++ ) {
-      if(((bitmap[j * byteWidth + i / 8])) & (128 >> (i & 7))) {
+  for(i=0; i<w; i++ ) {
+    if(((bitmap[j * byteWidth + i / 8])) & (128 >> (i & 7))) {
     Colorduino.drawPixel(x+i, y+j, color);
-      }
     }
+  }
   }
 }
 
 // COMMANDS
+
 void drawMask() {
   // clear the back-buffer
   GFX_Color_t background = Colorduino.color(0, 0, 0);
@@ -63,6 +73,11 @@ void setColor() {
   currentColor = Colorduino.color(buffer[0], buffer[1], buffer[2]);
 }
 
+void horizontalLine() {
+  Colorduino.drawFastHLine(buffer[0],buffer[1],buffer[2],currentColor);
+  Colorduino.swapBuffers(true);
+}
+
 void doCommand(uint8_t opcode) {
   switch(opcode) {
     case MSK:
@@ -70,6 +85,9 @@ void doCommand(uint8_t opcode) {
       break;
     case COL:
       setColor();
+      break;
+    case HLI:
+      horizontalLine();
       break;
   }
 }
@@ -90,14 +108,14 @@ void setup() {
 void loop() {
 }
 
-uint8_t opcode = 255;
+uint8_t opcode = NO_CMD;
 
 void serialEvent() {
   while (Serial.available()) {
 
     uint8_t incomingByte = (uint8_t)Serial.read();
 
-    if (opcode == 255) {
+    if (opcode == NO_CMD) {
       opcode = incomingByte;
       continue;
     }
@@ -107,8 +125,9 @@ void serialEvent() {
     if (bufferIndex == bufferSize[opcode]) {
       doCommand(opcode);
 
-      opcode = 255;
+      opcode = NO_CMD;
       bufferIndex = 0;
+      Serial.println("ack");
     }
   }
 }
