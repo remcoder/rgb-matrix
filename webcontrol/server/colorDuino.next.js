@@ -5,7 +5,6 @@ var serialPort = Meteor.npmRequire('serialport'),
   status = 'unintialized';
 
 var onReady = Meteor.bindEnvironment(function() {
-  console.log('init matrix')
   status = 'ready';
   if (onConnect)
     onConnect();
@@ -93,25 +92,18 @@ function sendCommand(opcode, bytes) {
   if (! opcode)
     throw new Error('missing opcode');
 
+  if ( !Opcode.exists(opcode) )
+    throw new Error('illegal opcode');
+
+    if(bytes)
+            console.log('sending:', opcode.toUpperCase(), bytes)
+    else
+        console.log('sending:', opcode.toUpperCase())
+
+
   bytes = bytes || [];
   bytes.unshift(Opcodes[opcode.toLowerCase()]);
   serial.write(new Buffer(bytes));
-}
-
-/*
-
- COMMANDS
-
-*/
-function bitmask(bitmap) {
-  var bytes = bitmap.map(function(binaryString) {
-    return parseInt(binaryString,2);
-  });
-
-  sendCommand('msk', bytes);
-}
-function setColor(r,g,b) {
-  sendCommand('col', [r,g,b]);
 }
 
 /*
@@ -122,11 +114,7 @@ EXPORTS
 
 this.colorDuino = {
   start : start,
-  sendCommand : sendCommand,
-
-  // commands
-  bitmask : bitmask,
-  setColor : setColor
+  sendCommand : sendCommand
 };
 
 Meteor.methods(this.colorDuino);

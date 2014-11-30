@@ -21,10 +21,10 @@ Meteor.startup(function () {
     changed: function(newDoc, oldDoc) {
       // console.log('observe', newDoc);
       if (newDoc.color != oldDoc.color)
-        colorDuino.setColor(...newDoc.color);
+        colorDuino.sendCommand('col', newDoc.color);
 
       if (!_.isEqual(newDoc, oldDoc))
-        colorDuino.bitmask(newDoc.bitmask);
+        colorDuino.sendCommand('msk', newDoc.bitmask.map( (bits) => parseInt(bits,2) ));
     }
   })
 
@@ -33,8 +33,8 @@ Meteor.startup(function () {
     onConnect : function() {
       var m = Matrix.findOne('42');
       // console.log(m);
-      colorDuino.setColor(...m.color);
-      colorDuino.bitmask(m.bitmask);
+      colorDuino.sendCommand('col', m.color);
+      colorDuino.sendCommand('msk', m.bitmask.map( (bits) => parseInt(bits,2) ));
     }
   });
 });

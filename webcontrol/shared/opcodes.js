@@ -11,3 +11,9 @@ this.Opcodes = {
   cir : 0x09,
   bmp : 0x10
 };
+
+this.Opcode = {
+  exists: function(opcode) {
+    return Object.keys(Opcodes).indexOf(opcode.toLowerCase()) > -1;
+  }
+}
