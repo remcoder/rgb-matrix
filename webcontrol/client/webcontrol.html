@@ -1,13 +1,15 @@
 <head>
   <title>webcontrol</title>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
+  <h1>ColorDuino console</h1>
+  {{> console}}
   {{> main}}
 </body>
 
 <template name="main">
-  <h1>ColorDuino console</h1>
 
   {{#with matrix}}
     {{#if arduino}}
@@ -21,13 +23,17 @@
       </div>
     {{/if}}
   {{/with}}
+
+
 </template>
+
+
 
 <template name="bitmask">
   <h2>Bitmask</h2>
     <div class="matrix">
     {{#each pixels}}
-      <div class="pixel"
+      <div class="pixel unselectable"
       style="-webkit-transform: translate3d({{x}}px,{{y}}px,0);
         {{#if pixel}}
         background-color: rgb({{../color}});

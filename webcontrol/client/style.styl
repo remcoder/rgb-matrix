@@ -4,6 +4,7 @@ body {
 	text-align : center;
   background-color: #222;
   color: #ddd;
+  font-family: 'Open Sans';
 }
 
 pixelSize = 32px
@@ -26,4 +27,34 @@ input {
   width: 256px;
   height: 256px;
   margin: 0 auto 42px auto;
+}
+
+input[name=command] {
+  font-family: 'courier new';
+  font-size: 42px;
+  border-radius: 26px;
+  padding: 0 26px;
+  text-transform: uppercase;
+  text-align: center;
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-input-placeholder 
+  {
+    // font-size: 90%;
+    text-transform: none;
+  }
+  &:focus::-webkit-input-placeholder 
+  {
+    color: transparent;
+  }
+  
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
