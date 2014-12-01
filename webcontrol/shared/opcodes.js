@@ -9,7 +9,7 @@ this.Opcodes = {
   rcb : 0x07,
   clr : 0x08,
   cir : 0x09,
-  bmp : 0x10
+  bmp : 0x0a
 };
 
 this.Opcode = {

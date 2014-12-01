@@ -21,11 +21,23 @@ const uint8_t RCB = 0x07;
 const uint8_t CLR = 0x08;
 const uint8_t CIR = 0x09;
 const uint8_t BMP = 0x0a;
-const uint8_t TST = 0xfe; // special test mode. goes through all commands in a loop
+
 const uint8_t NO_CMD = 0xff;
 
 
-uint8_t bufferSize[] = {8,3,1,3,3,2,2,2,0,0,192};
+uint8_t bufferSize[] = {
+  8,    // MSK
+  3,    // COL
+  1,    // PXL
+  3,    // VLI
+  3,    // HLI
+  2,    // LIN
+  2,    // RCT
+  2,    // RCB
+  0,    // CLR
+  0,    // CIR
+  192   // BMP
+};
 
 // Create new Colorduino instance
 ColorduinoPanel Colorduino;
@@ -35,6 +47,7 @@ ColorduinoPanel Colorduino;
 long previousMillis = 0;
 long interval = 250;
 
+uint8_t opcode = NO_CMD;
 uint8_t buffer[256];
 
 long bufferIndex = 0;
@@ -69,16 +82,30 @@ void drawMask() {
   Colorduino.swapBuffers(false);
 }
 
+// COL
 void setColor() {
   currentColor = Colorduino.color(buffer[0], buffer[1], buffer[2]);
 }
 
+// HLI
 void horizontalLine() {
   Colorduino.drawFastHLine(buffer[0],buffer[1],buffer[2],currentColor);
   Colorduino.swapBuffers(true);
 }
 
-void doCommand(uint8_t opcode) {
+// VLI
+void verticalLine() {
+  Colorduino.drawFastVLine(buffer[0],buffer[1],buffer[2],currentColor);
+  Colorduino.swapBuffers(true);
+}
+
+// CLR
+void clear() {
+  Colorduino.fillScreen(Colorduino.color(0, 0, 0));
+  Colorduino.swapBuffers(true);
+}
+
+void doCommand() {
   switch(opcode) {
     case MSK:
       drawMask();
@@ -89,7 +116,14 @@ void doCommand(uint8_t opcode) {
     case HLI:
       horizontalLine();
       break;
+    case VLI:
+      verticalLine();
+      break;
   }
+
+  opcode = NO_CMD;
+  bufferIndex = 0;
+  Serial.println("ack");
 }
 
 void setup() {
@@ -108,8 +142,6 @@ void setup() {
 void loop() {
 }
 
-uint8_t opcode = NO_CMD;
-
 void serialEvent() {
   while (Serial.available()) {
 
@@ -117,22 +149,17 @@ void serialEvent() {
 
     if (opcode == NO_CMD) {
       opcode = incomingByte;
-      continue;
+      
+      // if (bufferSize[opcode] == 0) // opcode w/o operand should execute immediately
+      //   doCommand();
+      // else
+        continue;
     }
 
     buffer[bufferIndex] = incomingByte;
     bufferIndex++;
-    if (bufferIndex == bufferSize[opcode]) {
-      doCommand(opcode);
-
-      opcode = NO_CMD;
-      bufferIndex = 0;
-      Serial.println("ack");
-    }
+    if (bufferIndex == bufferSize[opcode])
+      doCommand();
   }
 }
-
-
-
-
 
