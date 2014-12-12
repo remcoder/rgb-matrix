@@ -5,7 +5,7 @@
 
 <body>
   <h1>ColorDuino console</h1>
-  {{> console}}
+  
   {{> main}}
 </body>
 
@@ -15,6 +15,7 @@
     {{#if arduino}}
       <pre>Colorduino connected on port: {{arduino.port.comName}}
       </pre>
+      {{> console}}
       {{> bitmask }}
       {{> setColor }}
     {{else}}
