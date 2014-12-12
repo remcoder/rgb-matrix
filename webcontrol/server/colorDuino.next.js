@@ -101,7 +101,7 @@ function sendCommand(opcode, bytes) {
         console.log('sending:', opcode.toUpperCase())
 
 
-  bytes = bytes || [];
+  bytes = bytes ? bytes.slice() : [];
   bytes.unshift(Opcodes[opcode.toLowerCase()]);
   serial.write(new Buffer(bytes));
 }
