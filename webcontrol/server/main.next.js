@@ -26,15 +26,94 @@ Meteor.startup(function () {
       if (!_.isEqual(newDoc, oldDoc))
         colorDuino.sendCommand('msk', newDoc.bitmask.map( (bits) => parseInt(bits,2) ));
     }
-  })
+  });
+
+  Sequences.remove({});
+  Sequences.insert({
+    title : 'Cylon scanner',
+    patterns : [{
+      steps: [
+        {
+          time: 0,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,7,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,0,8] }
+          ]
+        },
+        {
+          time: 100,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,0,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,1,8] }
+          ]
+        },
+        {
+          time: 200,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,1,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,2,8] }
+          ]
+        },
+        {
+          time: 300,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,2,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,3,8] }
+          ]
+        },
+        {
+          time: 400,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,3,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,4,8] }
+          ]
+        },
+        {
+          time: 500,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,4,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,5,8] }
+          ]
+        },
+        {
+          time: 600,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,5,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,6,8] }
+          ]
+        },
+        {
+          time: 700,
+          opcodes : [
+            { opcode: 'col', data: [0,0,0] },
+            { opcode: 'hli', data: [0,6,8] },
+            { opcode: 'col', data: [0,255,0] },
+            { opcode: 'hli', data: [0,7,8] }
+          ]
+        }
+      ]
+    }]
+  });
 
   colorDuino.start({
     baudrate : 19200,
     onConnect : function() {
-      var m = Matrix.findOne('42');
-      // console.log(m);
-      colorDuino.sendCommand('col', m.color);
-      colorDuino.sendCommand('msk', m.bitmask.map( (bits) => parseInt(bits,2) ));
+      var seq = Sequences.findOne();
+      Sequencer.play(seq);
     }
   });
 });

@@ -4,7 +4,7 @@
 </head>
 
 <body>
-  <h1>ColorDuino console</h1>
+  <h1>ColorDuino Sequencer</h1>
   
   {{> main}}
 </body>
@@ -15,9 +15,10 @@
     {{#if arduino}}
       <pre>Colorduino connected on port: {{arduino.port.comName}}
       </pre>
-      {{> console}}
+      <!-- {{> console}}
       {{> bitmask }}
-      {{> setColor }}
+      {{> setColor }} -->
+      {{> sequencer}}
     {{else}}
       <div>
       please connect your Colorduino

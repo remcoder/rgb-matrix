@@ -1,0 +1,52 @@
+<!--
+
+  Sequencer 
+
+  - 2 types of patterns
+    - standard
+    - dynamic (generated code sequences by eval'ing a javascript function)
+  - sequence, consisting of patterns
+
+  var Sequence {
+    title : 'kitt scanner',
+    patterns: []
+  }
+
+  - Pattern: list of Steps
+  - Step:
+    - timecode
+    - list of opcodes + data
+
+-->
+
+<template name="sequencer">
+  {{#with currentSequence}}
+    <div class="sequencer">
+      <table>
+        <tbody>
+          <tr>
+            <th>time</th>
+            <th>opcode</th>
+            <th>data</th>
+          </tr>
+        </tbody>
+        
+        {{#each patterns}}
+          
+          {{#each steps}}
+            <tbody class="step {{#if current}}current{{/if}}">
+            {{#each opcodes}}
+              <tr class="opcode">
+                <td class="time">{{../time}}</td>
+                <td class="opcode">{{opcode}}</td> 
+                <td class="data">{{data}}</td>
+              </tr>
+            {{/each}}
+            </tbody>
+          {{/each}}
+            
+        {{/each}}
+      </table>
+    </div>
+  {{/with}}
+</template>

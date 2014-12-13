@@ -1,0 +1,32 @@
+.sequencer {
+  
+  table {
+    margin: auto;
+    text-align: left;
+    font-family: 'courier new';   
+    
+    border-collapse: collapse;
+    
+    .time { color: transparent; }
+    .step .opcode:first-child {
+      xbackground-color: #666;
+    }
+    
+    .step:nth-child(2n+1) {
+      background-color: #666;
+    }
+    
+    .step .opcode:first-child .time {
+      color: inherit;
+    }
+    
+    .step .opcode {
+      text-transform: uppercase;
+    }
+    .step.current {
+      color: #000;
+      background-color: rgba(255,255,0,0.8) ;
+      font-weight:bold;
+    }
+  }
+}
