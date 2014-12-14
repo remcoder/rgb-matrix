@@ -1,22 +1,11 @@
 
-var _currentSequence = null, _stepIndex = 0;
+var _currentPattern = null, 
+  _stepIndex = 0,
+  _stepTimer = null;
 
-Meteor.startup(function(){
-  CurrentSequence.remove({});
-  CurrentSequence.insert({
-    _id : '42',
-    step : 0
-  });
-});
 
-function play(sequence) {
-  _currentSequence = sequence;
-  _stepIndex = 0;
-  playStep();
-}
-
-function playStep() {
-  var steps = _currentSequence.patterns[0].steps;
+function _playStep() {
+  var steps = _currentPattern.steps;
   var step = steps[_stepIndex];
   
   // schedule next step
@@ -24,11 +13,11 @@ function playStep() {
   // because processing instructions may take a substantial amount of time
   var next = steps[_stepIndex+1];
   if (next)
-    Meteor.setTimeout(playStep, next.time - step.time);
+    _stepTimer = Meteor.setTimeout(_playStep, next.time - step.time);
   else
   {
     _stepIndex = 0;
-    Meteor.setTimeout(playStep, 100);
+    _stepTimer = Meteor.setTimeout(_playStep, 200);
   }
 
   // process instructions in current step
@@ -38,13 +27,43 @@ function playStep() {
   
   if(next) _stepIndex++;
 
-  CurrentSequence.update('42', {
+  CurrentPattern.update('42', {
     $set : {
       step : _stepIndex 
     }
-  })
+  });
+}
+
+function play(pattern) {
+  _currentPattern = pattern;
+  _stepIndex = 0;
+  _playStep();
+}
+
+function resume() {
+  // just play the next scheduled step w/o changing any state
+  _playStep();
+}
+
+function pause() {
+  // just interrupt playing w/o changing any state
+  Meteor.clearTimeout(_stepTimer);
+}
+
+function stop() {
+
 }
 
 this.Sequencer = {
-  play: play
+  play   : play,
+  pause  : pause,
+  resume : resume,
+  stop   : stop
 };
+
+Meteor.methods({
+  SequencerPlay   : play,
+  SequencerPause  : pause,
+  SequencerResume : resume,
+  SequencerStop   : stop
+});

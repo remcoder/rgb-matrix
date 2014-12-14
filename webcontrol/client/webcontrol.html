@@ -13,12 +13,13 @@
 
   {{#with matrix}}
     {{#if arduino}}
-      <pre>Colorduino connected on port: {{arduino.port.comName}}
+      <pre>Colorduino detected at: {{arduino.port.comName}} @ {{formatNumber arduino.baudrate '0.0a'}}bps
       </pre>
       <!-- {{> console}}
       {{> bitmask }}
-      {{> setColor }} -->
+      {{> setColor }}  --> 
       {{> sequencer}}
+      
     {{else}}
       <div>
       please connect your Colorduino

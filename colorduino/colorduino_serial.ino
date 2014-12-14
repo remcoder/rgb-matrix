@@ -58,12 +58,30 @@ void drawBitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t w, int16_t h, uin
   int16_t i, j, byteWidth = (w + 7) / 8;
 
   for(j=0; j<h; j++) {
-  for(i=0; i<w; i++ ) {
-    if(((bitmap[j * byteWidth + i / 8])) & (128 >> (i & 7))) {
-    Colorduino.drawPixel(x+i, y+j, color);
+    for(i=0; i<w; i++ ) {
+      if(((bitmap[j * byteWidth + i / 8])) & (128 >> (i & 7))) {
+        Colorduino.drawPixel(x+i, y+j, color);
+      }
     }
   }
+}
+
+void drawFullColorBitmap() {
+
+  uint8_t x, y, i, r,g,b;
+  GFX_Color_t color;
+
+  for(y=0; y<8; y++) 
+  for(x=0; x<8; x++) {  
+    i = 3 * (y*8+x);
+    r = buffer[i];
+    g = buffer[i+1];
+    b = buffer[i+2];
+    color = Colorduino.color(r,g,b);
+    Colorduino.drawPixel(x,y, color);
   }
+
+  Colorduino.swapBuffers(false);
 }
 
 // COMMANDS
@@ -74,8 +92,6 @@ void drawMask() {
   Colorduino.fillColor(background);
 
   // draw on the back-buffer
-  //Colorduino.drawLine(random(7), random(7), random(7), random(7), color);
-  //Colorduino.drawTriangle(0,0, 7,0 , 7,7, color);
   drawBitmap(0,0, buffer, 8,8, currentColor);
 
   // swap the buffers, but don't copy the new front-buffer to the new back-buffer
@@ -107,14 +123,18 @@ void clear() {
 
 void doCommand() {
   switch(opcode) {
-    case MSK:
-      drawMask();
+    case BMP:
+      Serial.println("bmp");
+      drawFullColorBitmap();
       break;
     case COL:
       setColor();
       break;
     case HLI:
       horizontalLine();
+      break;
+    case MSK:
+      drawMask();
       break;
     case VLI:
       verticalLine();

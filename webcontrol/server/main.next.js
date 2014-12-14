@@ -18,104 +18,123 @@ Meteor.startup(function () {
 
   Matrix.find('42').observe({
 
-    changed: function(newDoc, oldDoc) {
-      // console.log('observe', newDoc);
-      if (newDoc.color != oldDoc.color)
-        colorDuino.sendCommand('col', newDoc.color);
+    // changed: function(newDoc, oldDoc) {
+    //   // console.log('observe', newDoc);
+    //   if (newDoc.color != oldDoc.color)
+    //     colorDuino.sendCommand('col', newDoc.color);
 
-      if (!_.isEqual(newDoc, oldDoc))
-        colorDuino.sendCommand('msk', newDoc.bitmask.map( (bits) => parseInt(bits,2) ));
-    }
-  });
-
-  Sequences.remove({});
-  Sequences.insert({
-    title : 'Cylon scanner',
-    patterns : [{
-      steps: [
-        {
-          time: 0,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,7,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,0,8] }
-          ]
-        },
-        {
-          time: 100,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,0,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,1,8] }
-          ]
-        },
-        {
-          time: 200,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,1,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,2,8] }
-          ]
-        },
-        {
-          time: 300,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,2,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,3,8] }
-          ]
-        },
-        {
-          time: 400,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,3,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,4,8] }
-          ]
-        },
-        {
-          time: 500,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,4,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,5,8] }
-          ]
-        },
-        {
-          time: 600,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,5,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,6,8] }
-          ]
-        },
-        {
-          time: 700,
-          opcodes : [
-            { opcode: 'col', data: [0,0,0] },
-            { opcode: 'hli', data: [0,6,8] },
-            { opcode: 'col', data: [0,255,0] },
-            { opcode: 'hli', data: [0,7,8] }
-          ]
-        }
-      ]
-    }]
+    //   if (!_.isEqual(newDoc, oldDoc))
+    //     colorDuino.sendCommand('msk', newDoc.bitmask.map( (bits) => parseInt(bits,2) ));
+    // }
   });
 
   colorDuino.start({
     baudrate : 19200,
     onConnect : function() {
-      var seq = Sequences.findOne();
-      Sequencer.play(seq);
+      
+      
     }
   });
+
+  CurrentPattern.remove({});
+  CurrentPattern.insert({
+    _id : '42',
+    step : 0
+  });
+  // CurrentPattern.find('42').observe({
+  //   added: function(pattern) {
+  //     console.log('added')
+  //     Sequencer.play(pattern);
+  //   },
+  //   changed: function(pattern) {
+  //     console.log('changed')
+  //     Sequencer.play(pattern);
+  //   }
+  // });
+
+  
+  Patterns.remove({});
+  Patterns.insert({
+    title : 'Cylon scanner',
+  
+    steps: [
+      {
+        time: 0,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [7,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [0,0,8] }
+        ]
+      },
+      {
+        time: 100,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [0,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [1,0,8] }
+        ]
+      },
+      {
+        time: 200,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [1,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [2,0,8] }
+        ]
+      },
+      {
+        time: 300,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [2,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [3,0,8] }
+        ]
+      },
+      {
+        time: 400,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [3,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [4,0,8] }
+        ]
+      },
+      {
+        time: 500,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [4,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [5,0,8] }
+        ]
+      },
+      {
+        time: 600,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [5,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [6,0,8] }
+        ]
+      },
+      {
+        time: 700,
+        opcodes : [
+          { opcode: 'col', data: [0,0,0] },
+          { opcode: 'vli', data: [6,0,8] },
+          { opcode: 'col', data: [255,0,0] },
+          { opcode: 'vli', data: [7,0,8] }
+        ]
+      }
+    ]
+  });
+  
+
+
 });
 
 

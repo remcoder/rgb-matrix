@@ -20,8 +20,20 @@
 -->
 
 <template name="sequencer">
-  {{#with currentSequence}}
+  {{> generator }}
+  {{#with currentPattern}}
+    <div class="preview">        
+      {{#each steps}}
+        {{#if current}}
+          preview&nbsp;&nbsp;<img src="{{_image}}"/>
+        {{/if}}
+      {{/each}}
+    </div>
+
     <div class="sequencer">
+      <button data-action="play">play</button>
+      <button data-action="resume">resume</button>
+      <button data-action="pause">stop</button>
       <table>
         <tbody>
           <tr>
@@ -31,21 +43,19 @@
           </tr>
         </tbody>
         
-        {{#each patterns}}
-          
-          {{#each steps}}
-            <tbody class="step {{#if current}}current{{/if}}">
-            {{#each opcodes}}
-              <tr class="opcode">
-                <td class="time">{{../time}}</td>
-                <td class="opcode">{{opcode}}</td> 
-                <td class="data">{{data}}</td>
-              </tr>
-            {{/each}}
-            </tbody>
+        {{#each steps}}
+          <tbody class="step {{#if current}}current{{/if}}">
+          {{#each opcodes}}
+            <tr class="opcode">
+              <td class="time">{{../time}}</td>
+              <td class="opcode">{{opcode}}</td> 
+              <td class="img"><img src="{{../_image}}"/></td> 
+              <td class="data">{{data}}</td>
+            </tr>
           {{/each}}
-            
+          </tbody>
         {{/each}}
+            
       </table>
     </div>
   {{/with}}

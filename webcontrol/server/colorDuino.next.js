@@ -1,6 +1,6 @@
 var serialPort = Meteor.npmRequire('serialport'),
   serial = null,
-  _baudrate = 9600,
+  _baudrate = 19200,
   onConnect = null,
   status = 'unintialized';
 
@@ -26,7 +26,8 @@ function onListDevices (err, ports) {
       console.log('Arduino detected on port: ', arduinoPort.comName);
       Arduinos.insert({
         _id : arduinoPort.comName,
-        port: arduinoPort
+        port: arduinoPort,
+        baudrate : _baudrate
       });
 
       connect(arduinoPort.comName);
@@ -95,10 +96,12 @@ function sendCommand(opcode, bytes) {
   if ( !Opcode.exists(opcode) )
     throw new Error('illegal opcode');
 
-    if(bytes)
-            console.log('sending:', opcode.toUpperCase(), bytes)
-    else
-        console.log('sending:', opcode.toUpperCase())
+  // TODO: check # of bytes
+
+  // if(bytes)
+  //         console.log('sending:', opcode.toUpperCase(), bytes)
+  // else
+  //     console.log('sending:', opcode.toUpperCase())
 
 
   bytes = bytes ? bytes.slice() : [];
