@@ -5,6 +5,12 @@ IMPORTANT: use with Arduino IDE 1.5.5!
 
 */
 
+int freeRam () {
+  extern int __heap_start, *__brkval; 
+  int v; 
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
+
 // Include required libraries
 #include <Adafruit_GFX.h>
 #include <Colorduino_GFX.h>
@@ -146,14 +152,15 @@ void doCommand() {
 
 void setup() {
   Serial.begin(19200);
-  Serial.println("*** ColorDuino ***");
-  Serial.println("starting...");
-
+  Serial.println("      *** COLORDUINO ***");
+  Serial.print("2K RAM SYSTEM  ");
+  Serial.print( freeRam() );
+  Serial.println(" BYTES FREE");
   // Set port mode, load data structures and start the timer
   Colorduino.init();
   Colorduino.setWhiteBalance(36, 63, 63);
 
-  Serial.println("ready.");
+  Serial.println("READY.");
 }
 
 void loop() {
