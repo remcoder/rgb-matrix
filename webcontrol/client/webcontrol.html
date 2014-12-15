@@ -4,29 +4,25 @@
 </head>
 
 <body>
-  <h1>ColorDuino Sequencer</h1>
-  
   {{> main}}
 </body>
 
 <template name="main">
 
-  {{#with matrix}}
     {{#if arduino}}
-      <pre>Colorduino detected at: {{arduino.port.comName}} @ {{formatNumber arduino.baudrate '0.0a'}}bps
-      </pre>
+      
       <!-- {{> console}}
       {{> bitmask }}
       {{> setColor }}  --> 
       {{> sequencer}}
       
+      <pre>Colorduino detected at: {{arduino.port.comName}} @ {{formatNumber arduino.baudrate '0.0a'}}bps
+      </pre>
     {{else}}
       <div>
       please connect your Colorduino
       </div>
     {{/if}}
-  {{/with}}
-
 
 </template>
 

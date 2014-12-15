@@ -1,8 +1,11 @@
 <template name="generator">
   <div class="generator">
-    <!-- <textarea class="code setup"></textarea> -->
-    <h2>Pattern generator</h2>
-    <p>params: 'canvas','ctx','state'</p>
+  <h2>ColorDuino Pattern Generator</h2>
+
+    <h3>setup(canvas, ctx, state)</h3>
+    <textarea class="code setup" cols=80 rows=6 spellcheck="false"></textarea>
+    
+    <h3>draw(canvas, ctx, state)</h3>
     <textarea class="code draw" cols=80 rows=12 spellcheck="false">if (state.colors === undefined) state.colors = ['orange','magenta','cyan','black'];
 
 ctx.fillStyle = state.colors[0];
