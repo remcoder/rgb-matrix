@@ -5,7 +5,7 @@
   generate dynamic patterns
 
 */
-var code = ReactiveVar();
+Session.setDefault('drawCode', null);
 
 Template.generator.helpers({
 
@@ -15,7 +15,7 @@ Template.generator.events({
   'keyup .generator .draw.code' : function(evt) {
     console.log('generate pattern');
     console.log($(evt.currentTarget).val());
-    code.set( $(evt.currentTarget).val() );
+    Session.set('drawCode', $(evt.currentTarget).val() );
   }
 });
 
@@ -23,11 +23,11 @@ Template.generator.rendered = function () {
 
   // render the dynamic pattern whenever the code changes
   this.autorun(function() {
-    render(code.get());
+    render(Session.get('drawCode'));
   });
 
-  
-  code.set( this.$('.code').val() );
+
+  Session.set('drawCode', this.$('.code').val() );
 }
 
 // function _init() {
