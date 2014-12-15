@@ -5,6 +5,7 @@
   generate dynamic patterns
 
 */
+Session.setDefault('initCode', null);
 Session.setDefault('drawCode', null);
 
 Template.generator.helpers({
@@ -12,9 +13,10 @@ Template.generator.helpers({
 });
 
 Template.generator.events({
+  'keyup .generator .init.code' : function(evt) {
+    Session.set('initCode', $(evt.currentTarget).val() );
+  },
   'keyup .generator .draw.code' : function(evt) {
-    console.log('generate pattern');
-    console.log($(evt.currentTarget).val());
     Session.set('drawCode', $(evt.currentTarget).val() );
   }
 });
@@ -23,16 +25,19 @@ Template.generator.rendered = function () {
 
   // render the dynamic pattern whenever the code changes
   this.autorun(function() {
-    render(Session.get('drawCode'));
+    render(Session.get('initCode'), Session.get('drawCode'));
   });
 
-
+  Session.set('initCode', this.$('.init').val() );
   Session.set('drawCode', this.$('.code').val() );
 }
 
-// function _init() {
+function _init(body) {
+  var _compiledInit = new Function('canvas','ctx','state',body);
 
-// }
+  console.log('init',_state);
+  _compiledInit(_canvas, _ctx, _state);
+}
 
 var _state = null, 
   _canvas = null,
@@ -62,7 +67,6 @@ function _draw(body, time) {
 }
 
 function _imageDataToBitmap(data) {
-  console.log(data.length)
   var bitmap = [];
   for (var p = 0 ; p<256 ; p+=4) {
     bitmap.push(data[p]);
@@ -72,18 +76,15 @@ function _imageDataToBitmap(data) {
   return { opcode: 'bmp', data: bitmap };
 }
 
-function render(drawcode) {
+function render(initcode, drawcode) {
   _compiledDraw = null;
   _state = {};
   _canvas = document.createElement('canvas');
   _canvas.width = _canvas.height = 8;
   _ctx = _canvas.getContext('2d');
   CurrentPattern.update('42', { $set: { steps : [] }});
-  // _init(canvas, ctx, state);
 
+  _init(initcode);
   for (var i=0 ; i<4 ; i++) 
     _draw(drawcode, i*200);
-  
-  //console.log(frames)
-  // pattern.steps = frames;
 }
