@@ -1,5 +1,12 @@
 'use strict;'
 
+/*
+  
+  generate dynamic patterns
+
+*/
+var code = ReactiveVar();
+
 Template.generator.helpers({
 
 });
@@ -8,17 +15,20 @@ Template.generator.events({
   'keyup .generator .draw.code' : function(evt) {
     console.log('generate pattern');
     console.log($(evt.currentTarget).val());
-    var code = $(evt.currentTarget).val();
-      new Function('"use strict";\n' + code);
-    render(code);
+    code.set( $(evt.currentTarget).val() );
   }
 });
 
-/*
-  
-  generate dynamic patterns
+Template.generator.rendered = function () {
 
-*/
+  // render the dynamic pattern whenever the code changes
+  this.autorun(function() {
+    render(code.get());
+  });
+
+  
+  code.set( this.$('.code').val() );
+}
 
 // function _init() {
 

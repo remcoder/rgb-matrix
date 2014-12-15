@@ -2,7 +2,8 @@ Template.sequencer.helpers({
   currentPattern : function() {
     var pattern = CurrentPattern.findOne();
     if (!pattern) return;
-    pattern.steps[pattern.step].current = true;
+    var currentStep = pattern.steps[pattern.step];
+    if (currentStep) currentStep.current = true;
     return pattern;
   }
 });

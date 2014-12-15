@@ -3,47 +3,18 @@
     <!-- <textarea class="code setup"></textarea> -->
     <h2>Pattern generator</h2>
     <p>params: 'canvas','ctx','state'</p>
-    <textarea class="code draw" cols=80 rows=8>if (state.count === undefined) state.count = 0;
+    <textarea class="code draw" cols=80 rows=12 spellcheck="false">if (state.colors === undefined) state.colors = ['orange','magenta','cyan','black'];
 
-if (state.count == 0) {
-  ctx.fillStyle = 'blue'
-  ctx.fillRect(4,4,4,4);
-  ctx.fillStyle = 'green'
-  ctx.fillRect(0,4,4,4);
-  ctx.fillStyle = 'red'
-  ctx.fillRect(0,0,4,4);
-  ctx.clearRect(4,0,4,4);
-}
-else if (state.count == 1) {
-  ctx.fillStyle = 'blue'
-  ctx.fillRect(0,4,4,4);
-  ctx.fillStyle = 'green'
-  ctx.fillRect(0,0,4,4);
-  ctx.fillStyle = 'red'
-  ctx.fillRect(4,0,4,4);
-  ctx.clearRect(4,4,4,4);
-}
-else if (state.count == 2) {
-  ctx.fillStyle = 'blue'
-  ctx.fillRect(0,0,4,4);
-  ctx.fillStyle = 'green'
-  ctx.fillRect(4,0,4,4);
-  ctx.fillStyle = 'red'
-  ctx.fillRect(4,4,4,4);
-  ctx.clearRect(0,4,4,4);
-}
-else if (state.count == 3) {
-  ctx.fillStyle = 'blue'
-  ctx.fillRect(4,0,4,4);
-  ctx.fillStyle = 'green'
-  ctx.fillRect(4,4,4,4);
-  ctx.fillStyle = 'red'
-  ctx.fillRect(0,4,4,4);
-  ctx.clearRect(0,0,4,4);
-}
-
-state.count++;
-state.count%=4;     
+ctx.fillStyle = state.colors[0];
+ctx.fillRect(0,0,4,4);
+ctx.fillStyle = state.colors[1];
+ctx.fillRect(4,0,4,4);
+ctx.fillStyle = state.colors[2];
+ctx.fillRect(4,4,4,4);
+ctx.fillStyle = state.colors[3];
+ctx.fillRect(0,4,4,4);
+ 
+state.colors.unshift( state.colors.pop() ); 
     </textarea>
   </div>
 </template>

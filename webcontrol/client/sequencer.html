@@ -25,7 +25,7 @@
     <div class="preview">        
       {{#each steps}}
         {{#if current}}
-          preview&nbsp;&nbsp;<img src="{{_image}}"/>
+          real-time preview&nbsp;&nbsp;<img src="{{_image}}"/>
         {{/if}}
       {{/each}}
     </div>
@@ -39,6 +39,7 @@
           <tr>
             <th>time</th>
             <th>opcode</th>
+            <th>preview</th>
             <th>data</th>
           </tr>
         </tbody>

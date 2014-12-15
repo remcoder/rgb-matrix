@@ -16,12 +16,13 @@
     
     .time { color: transparent; }
     .step {
+      color : lime;
       &:first-child {
         xbackground-color: #666;
       }
       
       &:nth-child(2n+1) {
-        background-color: #666;
+        xbackground-color: #666;
       }
       
       .opcode:first-child .time {
@@ -30,10 +31,14 @@
       
       .opcode {
         text-transform: uppercase;
+        border: 1px solid #666;
+        .data {
+          font-size: 60%;
+        }
       }
       &.current {
         color: #000;
-        background-color: rgba(255,255,0,0.5) ;
+        background-color: rgba(255,255,255,0.5) ;
         font-weight:bold;
       }
       .img img {
