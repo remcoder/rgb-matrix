@@ -124,7 +124,6 @@ void clear() {
 void doCommand() {
   switch(opcode) {
     case BMP:
-      Serial.println("bmp");
       drawFullColorBitmap();
       break;
     case COL:
@@ -143,7 +142,6 @@ void doCommand() {
 
   opcode = NO_CMD;
   bufferIndex = 0;
-  Serial.println("ack");
 }
 
 void setup() {
@@ -153,7 +151,6 @@ void setup() {
 
   // Set port mode, load data structures and start the timer
   Colorduino.init();
-  // Set white balance
   Colorduino.setWhiteBalance(36, 63, 63);
 
   Serial.println("ready.");
