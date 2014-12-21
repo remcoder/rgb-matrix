@@ -17,7 +17,9 @@ function onListDevices (err, ports) {
   }
 
   // TODO: handle multiple Arduinos connected simultaneously
-  var arduinoPort = ports.filter(p => p.manufacturer.indexOf('Arduino') > -1)[0];
+  var arduinoPort = ports.filter(function(p) {
+    return p.manufacturer.indexOf('Arduino') > -1;
+  })[0];
 
   if (arduinoPort) {
     var arduino = Arduinos.findOne(arduinoPort.comName);
@@ -75,7 +77,8 @@ function connect(port) {
   });
 }
 
-function start(opts={}) {
+function start(opts) {
+  opts = opts || {};
   status = 'scanning for devices'
   if (opts.baudrate)
     _baudrate = opts.baudrate;

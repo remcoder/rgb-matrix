@@ -41,7 +41,7 @@ Template.bitmask.events({
 
   'click [data-action=clear]' : function() {
     Matrix.update('42', { $set:
-      { bitmask: _.range(8).map( el => '00000000' ) }
+      { bitmask: _.range(8).map( function(el) { return '00000000';} ) }
     });
   }
 });

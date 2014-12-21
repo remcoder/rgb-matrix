@@ -12,7 +12,9 @@ Template.console.events({
     var operand = parts[1];
     if (operand) {
       operand = operand.replace(/\s/g, '');
-      var bytes = operand.split(',').map((byte)=> parseInt(byte, 10));
+      var bytes = operand.split(',').map(function(byte) {
+        return parseInt(byte, 10);
+      });
     }
     if (!Opcode.exists(opcode))
       throw new Error('Illigal opcode: ' + opcode);
