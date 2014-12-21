@@ -4,6 +4,7 @@ IMPORTANT: use with Arduino IDE 1.5.5!
   1.5.6 - 1.5.8 don't work currently
 
 */
+const long serialSpeed = 38400;
 
 int freeRam () {
   extern int __heap_start, *__brkval; 
@@ -151,15 +152,15 @@ void doCommand() {
 }
 
 void setup() {
-  Serial.begin(19200);
+  // Set port mode, load data structures and start the timer
+  Colorduino.init();
+  Colorduino.setWhiteBalance(36, 63, 63);
+  
+  Serial.begin(serialSpeed);
   Serial.println("      *** COLORDUINO ***");
   Serial.print("2K RAM SYSTEM  ");
   Serial.print( freeRam() );
   Serial.println(" BYTES FREE");
-  // Set port mode, load data structures and start the timer
-  Colorduino.init();
-  Colorduino.setWhiteBalance(36, 63, 63);
-
   Serial.println("READY.");
 }
 

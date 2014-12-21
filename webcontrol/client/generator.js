@@ -86,5 +86,5 @@ function render(initcode, drawcode) {
 
   _init(initcode);
   for (var i=0 ; i<4 ; i++) 
-    _draw(drawcode, i*200);
+    _draw(drawcode, i*50);
 }

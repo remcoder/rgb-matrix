@@ -18,11 +18,8 @@ Meteor.startup(function () {
 
 
   colorDuino.start({
-    baudrate : 19200,
-    onConnect : function() {
-      
-      
-    }
+    baudrate : 38400,
+    onConnect : function() {}
   });
 
   CurrentPattern.remove({});

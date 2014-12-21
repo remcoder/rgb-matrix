@@ -48,32 +48,27 @@ function detectArduino() {
 }
 
 function connect(port) {
-  console.log("Connecting...")
+  console.log("Connecting @ " + _baudrate + 'bps')
   status = 'connecting';
   serial = new serialPort.SerialPort(port, {
-    baudrate: _baudrate
+    baudrate: _baudrate,
+    parser: serialPort.parsers.readline('\n')
   });
 
-  var input = "";
   serial.on("error", function(err, res) {
+    status = 'ERROR: ' + err;
     console.error(err,res);
   });
   serial.on("open", function() {
-    console.log('waiting for data');
     status = 'waiting for data';
   });
   serial.on('data', function(data) {
     // console.log('receiving data');
     status = 'receiving data';
-    var s = data.toString();
 
-    input += s.split('\n')[0];
-    if (s.indexOf('\n') > -1) {
-      console.log('> ' + input);
-      if (input.indexOf('ready.') > -1)
-        onReady();
-      input = s.split('\n')[1];
-    }
+    console.log('> '+ data);
+    if (data.indexOf('ready.') > -1)
+      onReady();
   });
 }
 

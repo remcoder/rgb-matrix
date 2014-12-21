@@ -17,7 +17,7 @@ function _playStep() {
   else
   {
     _stepIndex = 0;
-    _stepTimer = Meteor.setTimeout(_playStep, 200);
+    _stepTimer = Meteor.setTimeout(_playStep, 50);
   }
 
   // process instructions in current step
