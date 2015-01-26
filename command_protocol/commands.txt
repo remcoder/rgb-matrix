@@ -47,7 +47,10 @@ inv
   - invertdisplay
 
 TODO
-drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color),
-fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color),
-fillScreen(uint16_t color),
-invertDisplay(boolean i);
+
+UI modes:
+  - code-based pattern generator
+  - pattern sequencer
+  - command line interface (usable from both unix prompt or the browser?)
+  - direct pixel draw 
+  - send image / spritesheet / gif animation

@@ -1,0 +1,29 @@
+<template name="draw">
+  {{> bitmask }}
+</template>
+
+<template name="bitmask">
+  {{#with matrix}}
+    <h2>Bitmask</h2>
+    <div class="matrix">
+    {{#each pixels}}
+      <div class="pixel unselectable"
+      style="-webkit-transform: translate3d({{x}}px,{{y}}px,0);
+        {{#if pixel}}
+        background-color: rgb({{../color}});
+        box-shadow: 0px 0px 90px rgba({{../color}},0.5);
+        {{/if}}"
+      data-row="{{row}}"
+      data-column="{{column}}">&nbsp;</div>
+    {{/each}}
+    </div>
+
+    <h2>SetColor</h2>
+    <div>
+      <input name="color" type=color value="{{hexColor color}}"/>
+      <button data-action="clear">clear</button>
+    </div>
+  {{/with}}
+</template>
+
+
