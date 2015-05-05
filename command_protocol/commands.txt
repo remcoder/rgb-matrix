@@ -54,3 +54,5 @@ UI modes:
   - command line interface (usable from both unix prompt or the browser?)
   - direct pixel draw 
   - send image / spritesheet / gif animation
+    try this one: http://www.pixeljoint.com/files/icons/full/8x8big.gif
+
