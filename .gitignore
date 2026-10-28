@@ -1,1 +1,16 @@
 hello
+
+# added by meta .gitignore audit
+.env
+.env.*
+node_modules/
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log
+.idea/
+!.env.example
+!.env.sample
+/.idea/
